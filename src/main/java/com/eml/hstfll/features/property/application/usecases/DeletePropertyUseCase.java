@@ -1,7 +1,7 @@
 package com.eml.hstfll.features.property.application.usecases;
 
-import com.eml.hstfll.features.property.application.interfaces.UseCase;
-import com.eml.hstfll.features.property.application.interfaces.usecases.DeletePropertyUseCaseDTO;
+import com.eml.hstfll.features.property.application.interfaces.usecases.UseCase;
+import com.eml.hstfll.features.property.application.interfaces.usecases.dtos.DeletePropertyUseCaseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -19,6 +19,8 @@ public class DeletePropertyUseCase implements UseCase<DeletePropertyUseCaseDTO.P
 
     @Transactional
     public DeletePropertyUseCaseDTO.Result execute(DeletePropertyUseCaseDTO.Params params) {
+
+        //TODO
 
         return new DeletePropertyUseCaseDTO.Result(params.id);
     }

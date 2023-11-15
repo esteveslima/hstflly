@@ -1,4 +1,4 @@
-package com.eml.hstfll.features.property.application.interfaces.usecases;
+package com.eml.hstfll.features.property.application.interfaces.usecases.dtos;
 
 import lombok.Data;
 

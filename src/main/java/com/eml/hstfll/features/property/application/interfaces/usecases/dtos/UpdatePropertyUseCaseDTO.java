@@ -1,11 +1,12 @@
-package com.eml.hstfll.features.property.application.interfaces.usecases;
+package com.eml.hstfll.features.property.application.interfaces.usecases.dtos;
 
 import lombok.Data;
 
-public class RegisterPropertyUseCaseDTO {
+public class UpdatePropertyUseCaseDTO {
 
     @Data
     public static class Params {
+        public final int id;
         public final int userId;
         public final Payload payload;
 

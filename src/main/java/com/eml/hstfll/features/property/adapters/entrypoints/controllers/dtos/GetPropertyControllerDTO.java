@@ -1,6 +1,5 @@
 package com.eml.hstfll.features.property.adapters.entrypoints.controllers.dtos;
 
-import com.eml.hstfll.features.property.application.interfaces.usecases.GetPropertyUseCaseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

@@ -1,7 +1,9 @@
 package com.eml.hstfll.features.property.application.usecases;
 
-import com.eml.hstfll.features.property.application.interfaces.UseCase;
-import com.eml.hstfll.features.property.application.interfaces.usecases.GetPropertyUseCaseDTO;
+import com.eml.hstfll.features.property.adapters.gateways.database.models.PropertyEntity;
+import com.eml.hstfll.features.property.application.interfaces.gateways.daos.PropertyDAO;
+import com.eml.hstfll.features.property.application.interfaces.usecases.UseCase;
+import com.eml.hstfll.features.property.application.interfaces.usecases.dtos.GetPropertyUseCaseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -16,21 +18,26 @@ import java.util.List;
 public class GetPropertyUseCase implements UseCase<GetPropertyUseCaseDTO.Params, GetPropertyUseCaseDTO.Result> {
 
 
-    @Autowired
-    public GetPropertyUseCase() {
+    private PropertyDAO propertyDAO;
 
+    @Autowired
+    public GetPropertyUseCase(@Qualifier("propertyJpaDAO") PropertyDAO propertyDAO) {
+        this.propertyDAO = propertyDAO;
     }
 
     @Transactional
     public GetPropertyUseCaseDTO.Result execute(GetPropertyUseCaseDTO.Params params) {
 
+        PropertyEntity entityFound = this.propertyDAO.findById(params.id);
+
+        //TODO
         GetPropertyUseCaseDTO.Result.BookingsDataResult mockBookingResult = new GetPropertyUseCaseDTO.Result.BookingsDataResult(new Date(), new Date());
         List<GetPropertyUseCaseDTO.Result.BookingsDataResult> mockArrayBookingResult = new ArrayList<>();
         mockArrayBookingResult.add(mockBookingResult);
 
         return new GetPropertyUseCaseDTO.Result(
-                "name",
-                "location",
+                entityFound.getName(),
+                entityFound.getLocation(),
                 mockArrayBookingResult
         );
     }

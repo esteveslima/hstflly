@@ -1,4 +1,4 @@
-package com.eml.hstfll.features.property.application.interfaces;
+package com.eml.hstfll.features.property.application.interfaces.usecases;
 
 import org.springframework.stereotype.Component;
 

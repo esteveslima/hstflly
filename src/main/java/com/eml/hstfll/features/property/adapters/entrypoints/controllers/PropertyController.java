@@ -4,11 +4,12 @@ import com.eml.hstfll.features.property.adapters.entrypoints.controllers.dtos.De
 import com.eml.hstfll.features.property.adapters.entrypoints.controllers.dtos.GetPropertyControllerDTO;
 import com.eml.hstfll.features.property.adapters.entrypoints.controllers.dtos.RegisterPropertyControllerDTO;
 import com.eml.hstfll.features.property.adapters.entrypoints.controllers.dtos.UpdatePropertyControllerDTO;
-import com.eml.hstfll.features.property.application.interfaces.UseCase;
-import com.eml.hstfll.features.property.application.interfaces.usecases.DeletePropertyUseCaseDTO;
-import com.eml.hstfll.features.property.application.interfaces.usecases.GetPropertyUseCaseDTO;
-import com.eml.hstfll.features.property.application.interfaces.usecases.RegisterPropertyUseCaseDTO;
-import com.eml.hstfll.features.property.application.interfaces.usecases.UpdatePropertyUseCaseDTO;
+import com.eml.hstfll.features.property.application.exceptions.PropertyNotFoundRuntimeException;
+import com.eml.hstfll.features.property.application.interfaces.usecases.UseCase;
+import com.eml.hstfll.features.property.application.interfaces.usecases.dtos.DeletePropertyUseCaseDTO;
+import com.eml.hstfll.features.property.application.interfaces.usecases.dtos.GetPropertyUseCaseDTO;
+import com.eml.hstfll.features.property.application.interfaces.usecases.dtos.RegisterPropertyUseCaseDTO;
+import com.eml.hstfll.features.property.application.interfaces.usecases.dtos.UpdatePropertyUseCaseDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -83,6 +84,8 @@ public class PropertyController {
                     useCaseResultDTO.location,
                     useCaseResultDTO.bookings.stream().map((bookingData) -> new GetPropertyControllerDTO.Response.Body.BookingsDataResponse(bookingData.startDate, bookingData.startDate)).toList()
             );
+        } catch (PropertyNotFoundRuntimeException exception){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Property with id %d not found", exception.payload.id));
         } catch (Exception exception){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error");
         }
