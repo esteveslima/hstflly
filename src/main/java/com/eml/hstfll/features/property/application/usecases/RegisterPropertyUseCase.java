@@ -1,7 +1,7 @@
 package com.eml.hstfll.features.property.application.usecases;
 
-import com.eml.hstfll.features.property.adapters.gateways.database.models.PropertyEntity;
-import com.eml.hstfll.features.property.application.interfaces.gateways.daos.PropertyDAO;
+import com.eml.hstfll.features.property.domain.entities.PropertyEntity;
+import com.eml.hstfll.features.property.application.interfaces.gateways.database.PropertyDAO;
 import com.eml.hstfll.features.property.application.interfaces.usecases.UseCase;
 import com.eml.hstfll.features.property.application.interfaces.usecases.dtos.RegisterPropertyUseCaseDTO;
 import org.springframework.beans.factory.annotation.Autowired;

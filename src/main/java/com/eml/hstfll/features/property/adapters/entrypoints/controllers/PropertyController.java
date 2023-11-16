@@ -10,12 +10,14 @@ import com.eml.hstfll.features.property.application.interfaces.usecases.dtos.Del
 import com.eml.hstfll.features.property.application.interfaces.usecases.dtos.GetPropertyUseCaseDTO;
 import com.eml.hstfll.features.property.application.interfaces.usecases.dtos.RegisterPropertyUseCaseDTO;
 import com.eml.hstfll.features.property.application.interfaces.usecases.dtos.UpdatePropertyUseCaseDTO;
+import com.eml.hstfll.features.user.domain.entities.UserEntity;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -43,6 +45,7 @@ public class PropertyController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
+    @Secured({UserEntity.UserType.MapValue.HOST})
     public RegisterPropertyControllerDTO.Response.Body registerProperty(
             @Valid @RequestBody RegisterPropertyControllerDTO.Request.Body requestBody
     ) {
@@ -69,6 +72,7 @@ public class PropertyController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
+    @Secured({UserEntity.UserType.MapValue.USER, UserEntity.UserType.MapValue.HOST})
     public GetPropertyControllerDTO.Response.Body getProperty(
             @PathVariable @NotNull @Min(0) int id
     ) {

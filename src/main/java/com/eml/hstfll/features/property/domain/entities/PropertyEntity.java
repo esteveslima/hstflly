@@ -1,4 +1,4 @@
-package com.eml.hstfll.features.property.adapters.gateways.database.models;
+package com.eml.hstfll.features.property.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
