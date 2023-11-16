@@ -7,7 +7,7 @@ public class UpdatePropertyUseCaseDTO {
     @Data
     public static class Params {
         public final int id;
-        public final int userId;
+        public final int hostUserId;
         public final Payload payload;
 
         @Data

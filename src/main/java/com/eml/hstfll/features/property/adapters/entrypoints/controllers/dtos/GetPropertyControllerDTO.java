@@ -16,14 +16,14 @@ public class GetPropertyControllerDTO {
         public static class Body {
             public final String name;
             public final String location;
-            public final List<BookingsDataResponse> bookings;
-
-            @Data
-            @AllArgsConstructor
-            public static class BookingsDataResponse {
-                public final Date startDate;
-                public final Date endDate;
-            }
+//            public final List<BookingsDataResponse> bookings;
+//
+//            @Data
+//            @AllArgsConstructor
+//            public static class BookingsDataResponse {
+//                public final Date checkinDate;
+//                public final Date checkoutDate;
+//            }
         }
     }
 }

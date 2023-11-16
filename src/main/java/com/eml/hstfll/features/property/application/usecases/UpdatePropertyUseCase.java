@@ -27,7 +27,7 @@ public class UpdatePropertyUseCase implements UseCase<UpdatePropertyUseCaseDTO.P
         if(params.payload.name != null) propertyToUpdate.setName(params.payload.name);
         if(params.payload.location != null) propertyToUpdate.setLocation(params.payload.location);
 
-        PropertyEntity updatedProperty = this.propertyDAO.updateProperty(propertyToUpdate, params.userId);
+        PropertyEntity updatedProperty = this.propertyDAO.updateProperty(propertyToUpdate, params.hostUserId);
 
         //OBS.: at this point it would be good to notify users about this change
         return new UpdatePropertyUseCaseDTO.Result(updatedProperty.getId());

@@ -9,8 +9,8 @@ public interface PropertyDAO {
 
     public PropertyEntity findById(Integer id) throws PropertyNotFoundException;
 
-    public PropertyEntity updateProperty(PropertyEntity entity, Integer requesterUserId) throws PropertyNotFoundException;
+    public PropertyEntity updateProperty(PropertyEntity entity, Integer hostUserId) throws PropertyNotFoundException;
 
-    public void deleteProperty(Integer id, Integer requesterUserId) throws PropertyNotFoundException;
+    public void deleteProperty(Integer id, Integer hostUserId) throws PropertyNotFoundException;
 
 }

@@ -17,8 +17,7 @@ public class PropertyEntity {
     private int id;
 
     @ManyToOne()
-//    @JoinColumn(name = "hostId")
-    private UserEntity host;
+    private UserEntity hostUser;
 
     @Column(name = "name")
     private String name;

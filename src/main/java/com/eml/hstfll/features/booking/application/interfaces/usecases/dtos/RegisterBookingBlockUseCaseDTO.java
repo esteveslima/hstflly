@@ -1,18 +1,21 @@
-package com.eml.hstfll.features.property.application.interfaces.usecases.dtos;
+package com.eml.hstfll.features.booking.application.interfaces.usecases.dtos;
 
 import lombok.Data;
 
-public class RegisterPropertyUseCaseDTO {
+import java.util.Date;
+
+public class RegisterBookingBlockUseCaseDTO {
 
     @Data
     public static class Params {
+        public final int propertyId;
         public final int hostUserId;
         public final Payload payload;
 
         @Data
         public static class Payload {
-            public final String name;
-            public final String location;
+            public final Date checkinDate;
+            public final Date checkoutDate;
         }
     }
 

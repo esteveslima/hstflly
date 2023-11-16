@@ -25,8 +25,8 @@ public class RegisterPropertyUseCase implements UseCase<RegisterPropertyUseCaseD
     public RegisterPropertyUseCaseDTO.Result execute(RegisterPropertyUseCaseDTO.Params params) {
         PropertyEntity entity = new PropertyEntity();
         UserEntity hostEntity = new UserEntity();
-        hostEntity.setId(params.userId);
-        entity.setHost(hostEntity);
+        hostEntity.setId(params.hostUserId);
+        entity.setHostUser(hostEntity);
         entity.setName(params.payload.name);
         entity.setLocation(params.payload.location);
 

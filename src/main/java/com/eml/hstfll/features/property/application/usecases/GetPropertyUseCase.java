@@ -27,18 +27,11 @@ public class GetPropertyUseCase implements UseCase<GetPropertyUseCaseDTO.Params,
 
     @Transactional
     public GetPropertyUseCaseDTO.Result execute(GetPropertyUseCaseDTO.Params params) {
-
         PropertyEntity entityFound = this.propertyDAO.findById(params.id);
-
-        //TODO
-        GetPropertyUseCaseDTO.Result.BookingsDataResult mockBookingResult = new GetPropertyUseCaseDTO.Result.BookingsDataResult(new Date(), new Date());
-        List<GetPropertyUseCaseDTO.Result.BookingsDataResult> mockArrayBookingResult = new ArrayList<>();
-        mockArrayBookingResult.add(mockBookingResult);
 
         return new GetPropertyUseCaseDTO.Result(
                 entityFound.getName(),
-                entityFound.getLocation(),
-                mockArrayBookingResult
+                entityFound.getLocation()
         );
     }
 

@@ -16,13 +16,13 @@ public class GetPropertyUseCaseDTO {
     public static class Result {
         public final String name;
         public final String location;
-        public final List<BookingsDataResult> bookings;
-
-        @Data
-        public static class BookingsDataResult {
-            public final Date startDate;
-            public final Date endDate;
-        }
+//        public final List<BookingsDataResult> bookings;
+//
+//        @Data
+//        public static class BookingsDataResult {
+//            public final Date checkinDate;
+//            public final Date checkoutDate;
+//        }
     }
 
 }

@@ -21,7 +21,7 @@ public class DeletePropertyUseCase implements UseCase<DeletePropertyUseCaseDTO.P
 
     @Transactional
     public DeletePropertyUseCaseDTO.Result execute(DeletePropertyUseCaseDTO.Params params) {
-        this.propertyDAO.deleteProperty(params.id, params.userId);
+        this.propertyDAO.deleteProperty(params.id, params.hostUserId);
 
         //OBS.: at this point it would be good to notify users about this change
         return new DeletePropertyUseCaseDTO.Result(params.id);

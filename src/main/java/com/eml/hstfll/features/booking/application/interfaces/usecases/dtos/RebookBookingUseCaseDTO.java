@@ -1,13 +1,13 @@
-package com.eml.hstfll.features.property.application.interfaces.usecases.dtos;
+package com.eml.hstfll.features.booking.application.interfaces.usecases.dtos;
 
 import lombok.Data;
 
-public class DeletePropertyUseCaseDTO {
+public class RebookBookingUseCaseDTO {
 
     @Data
     public static class Params {
         public final int id;
-        public final int hostUserId;
+        public final int guestUserId;
     }
 
     @Data

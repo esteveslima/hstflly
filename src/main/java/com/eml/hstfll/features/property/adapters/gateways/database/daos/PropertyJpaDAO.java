@@ -33,11 +33,11 @@ public class PropertyJpaDAO implements PropertyDAO {
     @Override
     public PropertyEntity findById(Integer id) throws PropertyNotFoundException {
         String jpqlQuery = """
-        SELECT properties 
-        FROM PropertyEntity properties 
-        WHERE properties.id = :idValue
+            SELECT properties
+            FROM PropertyEntity properties 
+            WHERE properties.id = :idValue
         """;
-//TODO: load with bookings relations
+
         TypedQuery<PropertyEntity> typedQuery = entityManager.createQuery(jpqlQuery,PropertyEntity.class)
                 .setParameter("idValue", id);
 
@@ -50,20 +50,20 @@ public class PropertyJpaDAO implements PropertyDAO {
     }
 
     @Override
-    public PropertyEntity updateProperty(PropertyEntity entity, Integer requesterUserId) throws PropertyNotFoundException {
+    public PropertyEntity updateProperty(PropertyEntity entity, Integer hostUserId) throws PropertyNotFoundException {
         String jpqlQuery = """
-        UPDATE PropertyEntity p
-        SET
-        p.name = :nameValue,
-        p.location = :locationValue
-        WHERE p.id = :idValue and p.host.id = :hostIdValue
+            UPDATE PropertyEntity properties
+            SET
+            properties.name = :nameValue,
+            properties.location = :locationValue
+            WHERE properties.id = :idValue and properties.hostUser.id = :hostUserIdValue
         """;
 
         Query query = entityManager.createQuery(jpqlQuery)
                 .setParameter("idValue", entity.getId())
                 .setParameter("nameValue", entity.getName())
                 .setParameter("locationValue", entity.getLocation())
-                .setParameter("hostIdValue", requesterUserId);
+                .setParameter("hostUserIdValue", hostUserId);
 
         int updatedAmount = query.executeUpdate();
 
@@ -76,15 +76,15 @@ public class PropertyJpaDAO implements PropertyDAO {
     }
 
     @Override
-    public void deleteProperty(Integer id, Integer requesterUserId) throws PropertyNotFoundException {
+    public void deleteProperty(Integer id, Integer hostUserId) throws PropertyNotFoundException {
         String jpqlQuery = """
-        DELETE FROM PropertyEntity properties
-        WHERE properties.id = :idValue and properties.host.id = :hostIdValue
+            DELETE FROM PropertyEntity properties
+            WHERE properties.id = :idValue and properties.hostUser.id = :hostUserIdValue
         """;
 
         Query query = entityManager.createQuery(jpqlQuery)
                 .setParameter("idValue", id)
-                .setParameter("hostIdValue", requesterUserId);
+                .setParameter("hostUserIdValue", hostUserId);
 
         int updatedAmount = query.executeUpdate();
 

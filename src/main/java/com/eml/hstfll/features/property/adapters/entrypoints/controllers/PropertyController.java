@@ -76,7 +76,7 @@ public class PropertyController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    @Secured({UserEntity.UserType.MapValue.USER, UserEntity.UserType.MapValue.HOST})
+    @Secured({UserEntity.UserType.MapValue.GUEST, UserEntity.UserType.MapValue.HOST})
     public GetPropertyControllerDTO.Response.Body getProperty(
             @PathVariable @NotNull @Min(0) int id
     ) {
@@ -89,8 +89,7 @@ public class PropertyController {
 
             return new GetPropertyControllerDTO.Response.Body(
                     useCaseResultDTO.name,
-                    useCaseResultDTO.location,
-                    useCaseResultDTO.bookings.stream().map((bookingData) -> new GetPropertyControllerDTO.Response.Body.BookingsDataResponse(bookingData.startDate, bookingData.startDate)).toList()
+                    useCaseResultDTO.location
             );
         } catch (PropertyNotFoundException exception){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Property with id %d not found", exception.payload.id));

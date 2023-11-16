@@ -26,11 +26,11 @@ public class UserEntity {
     public UserType type;
 
     public static enum UserType {
-        USER,
+        GUEST,
         HOST;
 
         public class MapValue {
-            public static final String USER = "USER";
+            public static final String GUEST = "GUEST";
             public static final String HOST = "HOST";
         }
     }
