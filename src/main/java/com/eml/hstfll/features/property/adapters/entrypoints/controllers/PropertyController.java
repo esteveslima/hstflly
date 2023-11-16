@@ -4,12 +4,13 @@ import com.eml.hstfll.features.property.adapters.entrypoints.controllers.dtos.De
 import com.eml.hstfll.features.property.adapters.entrypoints.controllers.dtos.GetPropertyControllerDTO;
 import com.eml.hstfll.features.property.adapters.entrypoints.controllers.dtos.RegisterPropertyControllerDTO;
 import com.eml.hstfll.features.property.adapters.entrypoints.controllers.dtos.UpdatePropertyControllerDTO;
-import com.eml.hstfll.features.property.application.exceptions.PropertyNotFoundRuntimeException;
+import com.eml.hstfll.features.property.application.exceptions.PropertyNotFoundException;
 import com.eml.hstfll.features.property.application.interfaces.usecases.UseCase;
 import com.eml.hstfll.features.property.application.interfaces.usecases.dtos.DeletePropertyUseCaseDTO;
 import com.eml.hstfll.features.property.application.interfaces.usecases.dtos.GetPropertyUseCaseDTO;
 import com.eml.hstfll.features.property.application.interfaces.usecases.dtos.RegisterPropertyUseCaseDTO;
 import com.eml.hstfll.features.property.application.interfaces.usecases.dtos.UpdatePropertyUseCaseDTO;
+import com.eml.hstfll.features.user.application.interfaces.AuthTokenPayloadDTO;
 import com.eml.hstfll.features.user.domain.entities.UserEntity;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -47,12 +49,14 @@ public class PropertyController {
     @ResponseBody
     @Secured({UserEntity.UserType.MapValue.HOST})
     public RegisterPropertyControllerDTO.Response.Body registerProperty(
+            Authentication authentication,
             @Valid @RequestBody RegisterPropertyControllerDTO.Request.Body requestBody
     ) {
         try {
-            final int mockUserId = 1;
+            AuthTokenPayloadDTO authTokenPayload = (AuthTokenPayloadDTO) authentication.getPrincipal();
+
             RegisterPropertyUseCaseDTO.Params useCaseParamsDTO = new RegisterPropertyUseCaseDTO.Params(
-                    mockUserId,
+                    authTokenPayload.userId,
                     new RegisterPropertyUseCaseDTO.Params.Payload(
                             requestBody.name,
                             requestBody.location
@@ -88,7 +92,7 @@ public class PropertyController {
                     useCaseResultDTO.location,
                     useCaseResultDTO.bookings.stream().map((bookingData) -> new GetPropertyControllerDTO.Response.Body.BookingsDataResponse(bookingData.startDate, bookingData.startDate)).toList()
             );
-        } catch (PropertyNotFoundRuntimeException exception){
+        } catch (PropertyNotFoundException exception){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Property with id %d not found", exception.payload.id));
         } catch (Exception exception){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error");
@@ -98,15 +102,18 @@ public class PropertyController {
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
+    @Secured({UserEntity.UserType.MapValue.HOST})
     public UpdatePropertyControllerDTO.Response.Body updateProperty(
+            Authentication authentication,
             @PathVariable @NotNull @Min(0) int id,
             @Valid @RequestBody UpdatePropertyControllerDTO.Request.Body requestBody
     ) {
         try {
-            final int mockUserId = 1;
+            AuthTokenPayloadDTO authTokenPayload = (AuthTokenPayloadDTO) authentication.getPrincipal();
+
             UpdatePropertyUseCaseDTO.Params useCaseParamsDTO = new UpdatePropertyUseCaseDTO.Params(
                     id,
-                    mockUserId,
+                    authTokenPayload.userId,
                     new UpdatePropertyUseCaseDTO.Params.Payload(
                             requestBody.name,
                             requestBody.location
@@ -118,6 +125,8 @@ public class PropertyController {
             return new UpdatePropertyControllerDTO.Response.Body(
                     useCaseResultDTO.id
             );
+        } catch (PropertyNotFoundException exception){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Property Not found");
         } catch (Exception exception){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error");
         }
@@ -126,14 +135,17 @@ public class PropertyController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
+    @Secured({UserEntity.UserType.MapValue.HOST})
     public DeletePropertyControllerDTO.Response.Body deleteProperty(
+            Authentication authentication,
             @PathVariable @NotNull @Min(0) int id
     ) {
         try {
-            final int mockUserId = 1;
+            AuthTokenPayloadDTO authTokenPayload = (AuthTokenPayloadDTO) authentication.getPrincipal();
+
             DeletePropertyUseCaseDTO.Params useCaseParamsDTO = new DeletePropertyUseCaseDTO.Params(
                     id,
-                    mockUserId
+                    authTokenPayload.userId
             );
 
             DeletePropertyUseCaseDTO.Result useCaseResultDTO = deletePropertyUseCase.execute(useCaseParamsDTO);
@@ -141,6 +153,8 @@ public class PropertyController {
             return new DeletePropertyControllerDTO.Response.Body(
                     useCaseResultDTO.id
             );
+        } catch (PropertyNotFoundException exception){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Property Not found");
         } catch (Exception exception){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error");
         }

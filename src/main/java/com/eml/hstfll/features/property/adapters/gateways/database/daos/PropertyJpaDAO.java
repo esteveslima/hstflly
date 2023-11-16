@@ -1,11 +1,9 @@
 package com.eml.hstfll.features.property.adapters.gateways.database.daos;
 
 import com.eml.hstfll.features.property.domain.entities.PropertyEntity;
-import com.eml.hstfll.features.property.application.exceptions.PropertyNotFoundRuntimeException;
+import com.eml.hstfll.features.property.application.exceptions.PropertyNotFoundException;
 import com.eml.hstfll.features.property.application.interfaces.gateways.database.PropertyDAO;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -33,9 +31,13 @@ public class PropertyJpaDAO implements PropertyDAO {
     }
 
     @Override
-    public PropertyEntity findById(Integer id) throws PropertyNotFoundRuntimeException {
-        String jpqlQuery = "SELECT properties FROM PropertyEntity properties WHERE properties.id = :idValue";
-
+    public PropertyEntity findById(Integer id) throws PropertyNotFoundException {
+        String jpqlQuery = """
+        SELECT properties 
+        FROM PropertyEntity properties 
+        WHERE properties.id = :idValue
+        """;
+//TODO: load with bookings relations
         TypedQuery<PropertyEntity> typedQuery = entityManager.createQuery(jpqlQuery,PropertyEntity.class)
                 .setParameter("idValue", id);
 
@@ -43,8 +45,55 @@ public class PropertyJpaDAO implements PropertyDAO {
             PropertyEntity result = typedQuery.getSingleResult();
             return result;
         } catch(NoResultException exception) {
-            throw new PropertyNotFoundRuntimeException(new PropertyNotFoundRuntimeException.ExceptionPayload(id), exception);
+            throw new PropertyNotFoundException(new PropertyNotFoundException.ExceptionPayload(id), exception);
         }
+    }
+
+    @Override
+    public PropertyEntity updateProperty(PropertyEntity entity, Integer requesterUserId) throws PropertyNotFoundException {
+        String jpqlQuery = """
+        UPDATE PropertyEntity p
+        SET
+        p.name = :nameValue,
+        p.location = :locationValue
+        WHERE p.id = :idValue and p.host.id = :hostIdValue
+        """;
+
+        Query query = entityManager.createQuery(jpqlQuery)
+                .setParameter("idValue", entity.getId())
+                .setParameter("nameValue", entity.getName())
+                .setParameter("locationValue", entity.getLocation())
+                .setParameter("hostIdValue", requesterUserId);
+
+        int updatedAmount = query.executeUpdate();
+
+        boolean isUpdateSuccessful = updatedAmount == 1;
+        if(!isUpdateSuccessful){
+            throw new PropertyNotFoundException();
+        }
+
+        return entity;
+    }
+
+    @Override
+    public void deleteProperty(Integer id, Integer requesterUserId) throws PropertyNotFoundException {
+        String jpqlQuery = """
+        DELETE FROM PropertyEntity properties
+        WHERE properties.id = :idValue and properties.host.id = :hostIdValue
+        """;
+
+        Query query = entityManager.createQuery(jpqlQuery)
+                .setParameter("idValue", id)
+                .setParameter("hostIdValue", requesterUserId);
+
+        int updatedAmount = query.executeUpdate();
+
+        boolean isUpdateSuccessful = updatedAmount == 1;
+        if(!isUpdateSuccessful){
+            throw new PropertyNotFoundException();
+        }
+
+        return;
     }
 
 }

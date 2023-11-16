@@ -1,5 +1,6 @@
 package com.eml.hstfll.features.property.domain.entities;
 
+import com.eml.hstfll.features.user.domain.entities.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,8 +16,9 @@ public class PropertyEntity {
     @Column(name = "id", unique = true)
     private int id;
 
-    @Column(name = "hostId")
-    private int hostId;
+    @ManyToOne()
+//    @JoinColumn(name = "hostId")
+    private UserEntity host;
 
     @Column(name = "name")
     private String name;

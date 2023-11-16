@@ -1,5 +1,6 @@
 package com.eml.hstfll.features.property.application.usecases;
 
+import com.eml.hstfll.features.property.application.interfaces.gateways.database.PropertyDAO;
 import com.eml.hstfll.features.property.application.interfaces.usecases.UseCase;
 import com.eml.hstfll.features.property.application.interfaces.usecases.dtos.DeletePropertyUseCaseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,17 +12,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Qualifier("deletePropertyUseCase")
 public class DeletePropertyUseCase implements UseCase<DeletePropertyUseCaseDTO.Params, DeletePropertyUseCaseDTO.Result> {
 
+    private PropertyDAO propertyDAO;
 
     @Autowired
-    public DeletePropertyUseCase() {
-
+    public DeletePropertyUseCase(@Qualifier("propertyJpaDAO") PropertyDAO propertyDAO) {
+        this.propertyDAO = propertyDAO;
     }
 
     @Transactional
     public DeletePropertyUseCaseDTO.Result execute(DeletePropertyUseCaseDTO.Params params) {
+        this.propertyDAO.deleteProperty(params.id, params.userId);
 
-        //TODO
-
+        //OBS.: at this point it would be good to notify users about this change
         return new DeletePropertyUseCaseDTO.Result(params.id);
     }
 

@@ -1,12 +1,16 @@
 package com.eml.hstfll.features.property.application.interfaces.gateways.database;
 
-import com.eml.hstfll.features.property.application.exceptions.PropertyNotFoundRuntimeException;
+import com.eml.hstfll.features.property.application.exceptions.PropertyNotFoundException;
 import com.eml.hstfll.features.property.domain.entities.PropertyEntity;
 
 public interface PropertyDAO {
 
     public PropertyEntity register(PropertyEntity entity);
 
-    public PropertyEntity findById(Integer id) throws PropertyNotFoundRuntimeException;
+    public PropertyEntity findById(Integer id) throws PropertyNotFoundException;
+
+    public PropertyEntity updateProperty(PropertyEntity entity, Integer requesterUserId) throws PropertyNotFoundException;
+
+    public void deleteProperty(Integer id, Integer requesterUserId) throws PropertyNotFoundException;
 
 }

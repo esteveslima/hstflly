@@ -3,19 +3,19 @@ package com.eml.hstfll.features.property.application.exceptions;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-public class PropertyNotFoundRuntimeException extends RuntimeException {
+public class PropertyNotFoundException extends RuntimeException {
     public final ExceptionPayload payload;
 
-    public PropertyNotFoundRuntimeException() {
+    public PropertyNotFoundException() {
         super();
         this.payload = null;
     }
-    public PropertyNotFoundRuntimeException(ExceptionPayload payload) {
+    public PropertyNotFoundException(ExceptionPayload payload) {
         super();
         this.payload = payload;
     }
 
-    public PropertyNotFoundRuntimeException(ExceptionPayload payload, Throwable cause) {
+    public PropertyNotFoundException(ExceptionPayload payload, Throwable cause) {
         super(cause);
         this.payload = payload;
     }
