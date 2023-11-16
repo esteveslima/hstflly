@@ -31,7 +31,7 @@
 - Ensure you have the application port available(8080)
 - Run the makefile helper command, which will build the docker image and run it:
 ```
-  $ make up
+  $ make run
 ```
   - Alternatively, run the docker commands manually:
 ```
