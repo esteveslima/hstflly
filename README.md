@@ -7,6 +7,7 @@
 - Project Structure is following concepts of Clean Architecture
 - Implemented a very simple `User` authentication and `Property` management to give more context to the project around `Booking`
   - HOST users and GUEST users have different permissions in different endpoints
+  - Bearer `Authorization` header with the JWT token received from the login endpoint required for protected endpoints
 - DB 
   - In memory volatile DB (H2)
   - Schemas auto generated
