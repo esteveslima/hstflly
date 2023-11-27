@@ -31,6 +31,8 @@ public class BookingJpaDAO implements BookingDAO {
     public BookingEntity registerBooking(BookingEntity entity) throws BookingDateUnavailableException {
         int idInsertOperation = 0;
 
+        // P.S.: this isn't a definitive solution because concurrent parallel requests might be allowed to pass with conflicting data
+        // TODO: add where clause looking for conflicting dates
         boolean hasBookingDateConflict = this.hasDateRangeOverlap(
                 entityManager,
                 entity.getProperty().getId(),
@@ -83,6 +85,8 @@ public class BookingJpaDAO implements BookingDAO {
     @Override
     @Transactional
     public BookingEntity updateBooking(BookingEntity entity, Integer guestUserId) throws BookingNotFoundException, BookingDateUnavailableException {
+        // P.S.: this isn't a definitive solution because concurrent parallel requests might be allowed to pass with conflicting data
+        // TODO: add version check in the jpql query or switch to another approach to leverage the optimistic locking
         boolean hasBookingDateConflict = this.hasDateRangeOverlap(
                 entityManager,
                 entity.getProperty().getId(),
@@ -155,6 +159,8 @@ public class BookingJpaDAO implements BookingDAO {
     @Override
     @Transactional
     public void rebookCancelledBooking(BookingEntity entity, Integer guestUserId) throws BookingNotFoundException, BookingDateUnavailableException {
+        // P.S.: this isn't a definitive solution because concurrent parallel requests might be allowed to pass with conflicting data
+        // TODO: add version check in the jpql query or switch to another approach to leverage the optimistic locking
         boolean hasBookingDateConflict = this.hasDateRangeOverlap(
                 entityManager,
                 entity.getProperty().getId(),
@@ -220,6 +226,8 @@ public class BookingJpaDAO implements BookingDAO {
     @Override
     @Transactional
     public BookingEntity registerBookingBlock(BookingEntity entity) throws BookingDateUnavailableException {
+        // P.S.: this isn't a definitive solution because concurrent parallel requests might be allowed to pass with conflicting data
+        // TODO: add where clause looking for conflicting dates
         boolean hasBookingDateConflict = this.hasDateRangeOverlap(
                 entityManager,
                 entity.getProperty().getId(),
@@ -249,6 +257,8 @@ public class BookingJpaDAO implements BookingDAO {
     @Override
     @Transactional
     public BookingEntity updateBookingBlock(BookingEntity entity, Integer hostUserId) throws BookingNotFoundException, BookingDateUnavailableException {
+        // P.S.: this isn't a definitive solution because concurrent parallel requests might be allowed to pass with conflicting data
+        // TODO: add version check in the jpql query or switch to another approach to leverage the optimistic locking
         boolean hasBookingDateConflict = this.hasDateRangeOverlap(
                 entityManager,
                 entity.getProperty().getId(),

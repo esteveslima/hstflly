@@ -17,7 +17,8 @@
       - JDBC URL: `jdbc:h2:mem:volatile_db` (spring.datasource.url)
       - User Name: `user` (spring.datasource.username)
       - Password: `pass` (spring.datasource.password)  
-- Using JPA Optimistic Locking `Version` to take care of race conditions in booking transactions 
+- Using JPA Optimistic Locking `Version` to take care of race conditions in booking transactions
+  - P.S.: required fixes included as comments in the DAO file
 - Postman collection attached in the `/assets/postman` folder containing all endpoints configured, alongside request examples
 
 ### Potential improvements
